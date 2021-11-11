@@ -174,7 +174,10 @@ def FINCH(data, initial_rank=None, req_clust=None, distance='cosine', ensure_ear
     num_clust = [num_clust]
 
     while exit_clust > 1:
-        adj, orig_dist = clust_rank(mat, initial_rank, distance)
+        if distance in ['cityblock', 'cosine', 'euclidean', 'l1', 'l2', 'manhattan']:
+            adj, orig_dist = clust_rank(data, initial_rank, distance)
+        elif hyperbolic:
+            adj, orig_dist = clust_rank(data, initial_rank, np_dist)
         u, num_clust_curr = get_clust(adj, orig_dist, min_sim)
         c_, mat = get_merge(c_, u, data, hyperbolic=hyperbolic)
 
